@@ -2,94 +2,235 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-body{
-  margin: 0;
-  padding: 0;
-  background: #0a0421;
-}
-.middle{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-.btn{
-  position: relative;
-  display: block;
-  color: white;
-  font-size: 14px;
-  font-family: "montserrat";
-  text-decoration: none;
-  margin: 30px 0;
-  border: 2px solid #ff7675;
-  padding: 14px 60px;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: 1s all ease;
-}
-.btn::before{
-  background: #ff7675;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  z-index: -1;
-  transition: all 0.6s ease;
-}
+       :root {
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --text-color: #ffffff;
+          --green: #00ff62;
+          --red: #da2c4d;
+          --yellow: #f8ab37;
+          --blue: #0984e3;
+          --border-color: rgba(255, 255, 255, 0.1);
+       }
 
-.btn1::before{
-  width: 0%;
-  height: 100%;
-}
+       * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+       }
 
-.btn1:hover::before{
-  width: 100%;
-}
+       body {
+          background: var(--bg-color);
+          font-family: 'Poppins', sans-serif;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 40px 20px;
+          color: var(--text-color);
+       }
+
+       .result-card {
+          max-width: 600px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+          text-align: center;
+       }
+
+       .description-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 2rem;
+          color: var(--yellow);
+          margin-bottom: 25px;
+          font-weight: 700;
+       }
+
+       /* === Statisika Bloki === */
+       .stats-container {
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 16px;
+          padding: 20px;
+          margin-bottom: 30px;
+          border: 1px solid var(--border-color);
+          text-align: left;
+       }
+
+       .stat-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 10px 0;
+          font-size: 1.05rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+       }
+       .stat-item:last-child {
+          border-bottom: none;
+       }
+       .stat-label {
+          color: rgba(255, 255, 255, 0.7);
+       }
+       .stat-value {
+          font-weight: 600;
+          color: var(--green);
+       }
+
+       /* === Dynamic Foiz Ranglari === */
+       .score-badge {
+          display: inline-block;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.5rem;
+          font-weight: 700;
+          padding: 12px 30px;
+          border-radius: 50px;
+          margin-bottom: 30px;
+          letter-spacing: 1px;
+       }
+       .perfect { background: rgba(0, 255, 98, 0.15); color: #00ff62; border: 2px solid #00ff62; }
+       .good { background: rgba(56, 255, 0, 0.15); color: #26ff00; border: 2px solid #26ff00; }
+       .average { background: rgba(248, 171, 55, 0.15); color: var(--yellow); border: 2px solid var(--yellow); }
+       .bad { background: rgba(218, 44, 77, 0.15); color: var(--red); border: 2px solid var(--red); }
+
+       /* === Xatolar Ro'yxati (Mistakes) === */
+       .mistakes-section {
+          text-align: left;
+          margin-bottom: 35px;
+          background: rgba(218, 44, 77, 0.05);
+          border: 1px solid rgba(218, 44, 77, 0.2);
+          padding: 20px;
+          border-radius: 16px;
+       }
+       .mistakes-title {
+          font-family: 'Montserrat', sans-serif;
+          color: var(--red);
+          font-size: 1.1rem;
+          margin-bottom: 12px;
+          font-weight: 700;
+          text-transform: uppercase;
+       }
+       .mistakes-list {
+          list-style: none;
+       }
+       .mistakes-list li {
+          font-size: 0.95rem;
+          padding: 6px 0;
+          color: #ff9f9f;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+       }
+       .mistakes-list li::before {
+          content: "❌";
+          font-size: 0.85rem;
+       }
+
+       /* === Tugmalar (Buttons) === */
+       .actions-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+       }
+
+       .btn {
+          width: 100%;
+          padding: 16px;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          text-decoration: none;
+          letter-spacing: 1px;
+          border-radius: 12px;
+          cursor: pointer;
+          display: inline-block;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+       }
+
+       .btn-play {
+          background: linear-gradient(138deg, var(--red), var(--yellow));
+          color: #fff;
+          box-shadow: 0 5px 15px rgba(218, 44, 77, 0.3);
+       }
+       .btn-play:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(218, 44, 77, 0.5);
+       }
+
+       .btn-home {
+          background: transparent;
+          color: #fff;
+          border: 2px solid var(--border-color);
+       }
+       .btn-home:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: #fff;
+       }
+
+       .btn:active { transform: translateY(0); }
+
     </style>
 </head>
-<body bgcolor="#008000">
- 
-  <div class="middle">
+<body>
 
-    <h1 style="color:rgb(251, 251, 0, 0.865); text-align: center;">{{description}}</p></h1>
+  <div class="result-card">
 
-    <h2 ><p style="color:rgb(0, 255, 98); text-align: center;">All test amounts: {{amount}}</h2>
-        <h2 ><p style="color:rgb(0, 255, 98); text-align: center;">You made the right choices: {{acceptance}}</h2>
-          <h2 ><p style="color:rgb(0, 255, 98); text-align: center;">Test type: {{language}}</h2>
+      <!-- Test Tavsifi -->
+      <h1 class="description-title">{{description}}</h1>
 
-        {% if percentage > 99 %} 
-          <h2 style="color:rgba(0, 254, 8, 0.985); text-align: center;">Well done, 💯 PERFECT 💯</p></h2>
-        {% elif percentage > 80 %}
-          <h2 ><p style="color:rgb(38, 255, 0); text-align: center;">You made the right choices: {{percentage}} %</p></h2>
-        {% elif percentage > 70 %}
-          <h2 ><p style="color:rgb(188, 226, 0); text-align: center;">You made the right choices: {{percentage}} %</p></h2>
-        {% elif percentage > 50 %}
-          <h2 ><p style="color:rgb(226, 98, 0); text-align: center;">You made the right choices: {{percentage}} %</p></h2>
-        {% else %}
-          <h2 ><p style="color:rgb(226, 0, 0); text-align: center;">You made the right choices: 🆘 {{percentage}} % 🆘 </p></h2>  
-        {% endif %}
+      <!-- Umumiy Statistika -->
+      <div class="stats-container">
+          <div class="stat-item">
+              <span class="stat-label">Total Questions:</span>
+              <span class="stat-value" style="color: #fff;">{{amount}}</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-label">Correct Answers:</span>
+              <span class="stat-value">{{acceptance}}</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-label">Test Type:</span>
+              <span class="stat-value" style="color: var(--yellow); text-transform: uppercase;">{{language}}</span>
+          </div>
+      </div>
 
-            {% if mistakes %} 
-      <h2 ><p style="color:rgb(188, 226, 0); text-align: center;">Mistakes: </p></h2>
-            {% endif %} 
-        {% for i in mistakes %} 
-  <h2 ><p style="color:rgb(188, 226, 0); text-align: center;">{{i}}</p></h2>
-        {% endfor %}
-          
-          
-    
-      <br>
-    <br>
-    <a href="/play_again/" class="btn btn1" style="text-align: center;">🔄 Play again 🔄</a>
-    <!-- <a href="" class="btn btn1">Talabalar 👨‍🎓</a> -->
-    <!-- <h1><a href="/adminlar/" class="btn btn1">Adminlar 👨‍💻</a></h1> -->
-    <!-- <h1><a href="/mualliflar/" class="btn btn1">Mualiflar ✍️</a></h1> -->
-    <h1><a href="/home_page/" class="btn btn1" style="text-align: center;">🏠 home 🏠</a></h1>
+      <!-- Foiz ko'rsatkichi (Shartli Django renderi) -->
+      {% if percentage > 99 %}
+          <div class="score-badge perfect">💯 PERFECT 100%</div>
+      {% elif percentage > 80 %}
+          <div class="score-badge good">🎉 {{percentage}} %</div>
+      {% elif percentage > 50 %}
+          <div class="score-badge average">👍 {{percentage}} %</div>
+      {% else %}
+          <div class="score-badge bad">🆘 {{percentage}} %</div>
+      {% endif %}
+
+      <!-- Xatolar mavjud bo'lsa chiqadigan blok -->
+      {% if mistakes %}
+          <div class="mistakes-section">
+              <h3 class="mistakes-title">Your Mistakes:</h3>
+              <ul class="mistakes-list">
+                  {% for i in mistakes %}
+                      <li>{{i}}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+      {% endif %}
+
+      <!-- Navigatsiya Tugmalari -->
+      <div class="actions-wrapper">
+          <a href="/play_again/" class="btn btn-play">🔄 Play Again 🔄</a>
+          <a href="/home_page/" class="btn btn-home">🏠 Back to Home 🏠</a>
+      </div>
+
   </div>
-  <!-- <h3><a href="/docs/"  style="color:rgba(63, 84, 0, 0.993);"> API swagger docs</a></h3> -->
 
 </body>
 </html>

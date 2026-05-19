@@ -1,82 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <title>register</title>
-   <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Quiz Platform</title>
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <style>
+       :root {
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --text-color: #ffffff;
+          --primary-color: #da2c4d; /* To'q qizil-gilos rang */
+          --yellow: #f8ab37;
+          --input-bg: rgba(255, 255, 255, 0.05);
+          --border-color: rgba(255, 255, 255, 0.1);
+       }
 
+       * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+       }
 
+       body {
+          background: var(--bg-color);
+          font-family: 'Poppins', sans-serif;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          color: var(--text-color);
+       }
 
+       /* === Markaziy Kartochka === */
+       .register-card {
+          max-width: 450px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+          text-align: center;
+       }
 
+       .card-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 2rem;
+          color: #fff;
+          margin-bottom: 8px;
+          font-weight: 700;
+       }
 
-    .feedback-tab {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      top: 0px;
-      right: 270px;
-      background-color: #FFA400;
-      color: white;
-      opacity: 0.6;
-      border-radius: 0 0 3px 3px;
-      padding: 5px 10px;
-      cursor: pointer;
-      z-index: 2;
-      transition: all 0.3s ease-in-out;
-    }
-    .feedback-tab:hover {
-      opacity: 1;
-    }
-    .feedback-tab-close-button {
-      margin-left: 5px;
-      height: 1em;
-      width: 1em;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .feedback-anchor:focus {
-      text-decoration: none;
-    }
-    .feedback-anchor-closing {
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-    aside#region_switcher {
-      position: initial;
-    }
-    #close-icon-svg {
-      opacity: 0.5;
-      transition: all 0.3s ease-in-out;
-    }
-    #close-icon-svg:hover {
-      opacity: 1;
-    }
-    #close-icon {
-      fill: white;
-    }
+       .card-subtitle {
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.5);
+          margin-bottom: 30px;
+       }
 
+       /* === Forma elementlari === */
+       .form-group {
+          margin-bottom: 20px;
+          text-align: left;
+       }
 
+       label {
+          display: block;
+          font-size: 0.85rem;
+          color: #d1f965; /* Och yashil-sariq belgi */
+          margin-bottom: 6px;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+       }
 
+       input[type="text"],
+       input[type="number"],
+       select {
+          width: 100%;
+          padding: 14px 18px;
+          background: var(--input-bg);
+          border: 2px solid var(--border-color);
+          border-radius: 12px;
+          color: var(--text-color);
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.95rem;
+          outline: none;
+          transition: border-color 0.3s ease, background-color 0.3s ease;
+       }
+
+       input:focus, select:focus {
+          border-color: var(--yellow);
+          background-color: rgba(255, 255, 255, 0.08);
+       }
+
+       /* Select o'qi rangini moslash (qorong'u rejim uchun) */
+       select option {
+          background: var(--card-bg);
+          color: var(--text-color);
+       }
+
+       /* === Submit Tugmasi === */
+       .btn-register {
+          width: 100%;
+          padding: 16px;
+          background: linear-gradient(138deg, var(--primary-color), var(--yellow));
+          border: none;
+          border-radius: 12px;
+          color: #fff;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          cursor: pointer;
+          margin-top: 15px;
+          box-shadow: 0 5px 15px rgba(218, 44, 77, 0.3);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+       }
+
+       .btn-register:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(218, 44, 77, 0.5);
+       }
+
+       .btn-register:active {
+          transform: translateY(0);
+       }
+
+       /* Kirish sahifasiga havola */
+       .login-link {
+          margin-top: 25px;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.6);
+       }
+       .login-link a {
+          color: var(--yellow);
+          text-decoration: none;
+          font-weight: 600;
+       }
+       .login-link a:hover {
+          text-decoration: underline;
+       }
     </style>
 </head>
 <body>
-      <h1>
-  <form action="/register/" method="post">{% csrf_token %}
-    <label></label>
-    <input type="text" name="name" placeholder="name">
-        <br>
-        <label></label>
-        <input type="number" name="gender" placeholder="gender">
-    <br>
-    <label></label>
-    <input type="text" name="tel_number" placeholder="tel_number">
-        <br>
-        <input type="text" name="year_of_birth" placeholder="year_of_birth">
 
-    </form></h1>
+  <div class="register-card">
+      <h1 class="card-title">Sign Up</h1>
+      <p class="card-subtitle">Create your account to start the quiz</p>
+
+      <!-- Registratsiya Formasi -->
+      <form action="/register/" method="post">
+          {% csrf_token %}
+
+          <!-- Ism -->
+          <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="John Doe" required>
+          </div>
+
+          <!-- Jins (Raqam o'rniga Select tanlovi qo'yildi) -->
+          <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required>
+                  <option value="" disabled selected>Select your gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+              </select>
+          </div>
+
+          <!-- Telefon raqami -->
+          <div class="form-group">
+              <label for="tel_number">Phone Number</label>
+              <input type="text" id="tel_number" name="tel_number" placeholder="+998901234567" required>
+          </div>
+
+          <!-- Tug'ilgan yil -->
+          <div class="form-group">
+              <label for="year_of_birth">Year of Birth</label>
+              <input type="number" id="year_of_birth" name="year_of_birth" placeholder="2000" min="1950" max="2026" required>
+          </div>
+
+          <!-- Yuborish tugmasi -->
+          <button type="submit" class="btn-register">Register</button>
+      </form>
+
+      <div class="login-link">
+          Already have an account? <a href="/login/">Log In</a>
+      </div>
+  </div>
 
 </body>
 </html>
-

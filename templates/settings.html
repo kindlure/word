@@ -2,86 +2,234 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings & Profile</title>
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-body{
-  margin: 0;
-  padding: 0;
-  background: #0a0421;
-}
-.middle{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-.btn{
-  position: relative;
-  display: block;
-  color: white;
-  font-size: 14px;
-  font-family: "montserrat";
-  text-decoration: none;
-  margin: 30px 0;
-  border: 2px solid #ff7675;
-  padding: 14px 60px;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: 1s all ease;
-}
-.btn::before{
-  background: #ff7675;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  z-index: -1;
-  transition: all 0.6s ease;
-}
+       :root {
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --text-color: #ffffff;
+          --green: #00ff62;
+          --red: #da2c4d;
+          --yellow: #f8ab37;
+          --blue: #0984e3;
+          --input-bg: rgba(255, 255, 255, 0.05);
+          --input-border: rgba(255, 255, 255, 0.1);
+       }
 
-.btn1::before{
-  width: 0%;
-  height: 100%;
-}
+       * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+       }
 
-.btn1:hover::before{
-  width: 100%;
-}
+       body {
+          background: var(--bg-color);
+          font-family: 'Poppins', sans-serif;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 40px 20px;
+          color: var(--text-color);
+       }
+
+       .settings-card {
+          max-width: 550px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--input-border);
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+       }
+
+       .card-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.8rem;
+          color: #fff;
+          margin-bottom: 25px;
+          text-align: center;
+          font-weight: 700;
+       }
+
+       /* === Statistika paneli === */
+       .profile-stats {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 30px;
+       }
+       .stat-box {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--input-border);
+          padding: 15px;
+          border-radius: 14px;
+          text-align: center;
+       }
+       .stat-box p {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.6);
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          letter-spacing: 0.5px;
+       }
+       .stat-box span {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: var(--green);
+       }
+
+       /* === Forma elementlari === */
+       .form-group {
+          margin-bottom: 20px;
+          text-align: left;
+       }
+
+       label {
+          display: block;
+          color: #d1f965;
+          font-weight: 500;
+          margin-bottom: 8px;
+          font-size: 0.9rem;
+       }
+
+       input[type="text"],
+       input[type="number"] {
+          width: 100%;
+          padding: 14px 18px;
+          background: var(--input-bg);
+          border: 2px solid var(--input-border);
+          border-radius: 12px;
+          color: var(--text-color);
+          font-family: 'Poppins', sans-serif;
+          font-size: 1rem;
+          outline: none;
+          transition: border-color 0.3s ease;
+       }
+       input[type="text"]:focus,
+       input[type="number"]:focus {
+          border-color: var(--yellow);
+       }
+
+       /* === Tugmalar === */
+       .btn-save {
+          width: 100%;
+          padding: 15px;
+          background: linear-gradient(138deg, var(--red), var(--yellow));
+          border: none;
+          border-radius: 12px;
+          color: #fff;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          cursor: pointer;
+          box-shadow: 0 5px 15px rgba(218, 44, 77, 0.2);
+          margin-top: 10px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+       }
+       .btn-save:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(218, 44, 77, 0.4);
+       }
+
+       .btn-home {
+          display: block;
+          text-align: center;
+          width: 100%;
+          padding: 14px;
+          margin-top: 20px;
+          background: transparent;
+          color: #fff;
+          border: 2px solid var(--input-border);
+          border-radius: 12px;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.95rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          text-decoration: none;
+          letter-spacing: 1px;
+          transition: background 0.3s, border-color 0.3s;
+       }
+       .btn-home:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: #fff;
+       }
+
+       /* === Qo'shimcha havolalar (Logout, About) === */
+       .extra-links {
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.9rem;
+       }
+       .extra-links a {
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.3s;
+       }
+       .link-info { color: #a29bfe; }
+       .link-info:hover { color: #81ecec; }
+       .link-logout { color: #ff7675; }
+       .link-logout:hover { color: #ff4757; }
+
     </style>
 </head>
-<body bgcolor="#008000">
-  <div class="middle">
-    <h1 style="color:rgb(0, 255, 98); text-align: center;"> The number of all your tests: {{i.test}}</p></h1>
-    <h2 ><p style="color:rgb(0, 255, 98); text-align: center;">Percentage: {{i.percentage}} %</h2>
- 
-          
-  <form method="post">{% csrf_token %}
-    <lebel style="color: rgba(209, 249, 101, 0.99);">Name: </lebel>
-    <input type="text" name="name" value="{{i.name}}">
-    <br>
-    <lebel style="color: rgba(209, 249, 101, 0.99);">Phone number: </lebel>
-    <input type="number" name="tel_number" value="{{i.tel_number}}">
-    <br>
-    <label style="color: rgba(209, 249, 101, 0.99);">Year of birth:</label>
-    <input type="number" name="year_of_birth" value="{{i.year_of_birth}}">
-    <button type="submit">Saqlash</button>
-  </h3>
-  <div style="display: flex;">
-  </div>   
-  </form>
-    
-      <br>
-    <br>
+<body>
 
-    <h1><a href="/home_page/" class="btn btn1" style="text-align: center;">🏠 home 🏠</a></h1>
+  <div class="settings-card">
+      <h1 class="card-title">⚙️ Settings</h1>
 
-    <h3><a style="color: rgb(62, 70, 1);" href="/logout/" >Log out</a></h3>
+      <!-- Foydalanuvchi progress statistikasi -->
+      <div class="profile-stats">
+          <div class="stat-box">
+              <p>Total Tests</p>
+              <span>{{i.test}}</span>
+          </div>
+          <div class="stat-box">
+              <p>Avg Percentage</p>
+              <span>{{i.percentage}}%</span>
+          </div>
+      </div>
 
-    <h1><a style="color: rgb(62, 70, 1);" href="/about/">Information about the program</a></h1>
+      <!-- Tahrirlash Formasi -->
+      <form method="post">
+          {% csrf_token %}
 
+          <div class="form-group">
+              <label for="name">Full Name:</label>
+              <input type="text" id="name" name="name" value="{{i.name}}" placeholder="Enter your name">
+          </div>
+
+          <div class="form-group">
+              <label for="tel_number">Phone Number:</label>
+              <input type="number" id="tel_number" name="tel_number" value="{{i.tel_number}}" placeholder="998901234567">
+          </div>
+
+          <div class="form-group">
+              <label for="year_of_birth">Year of Birth:</label>
+              <input type="number" id="year_of_birth" name="year_of_birth" value="{{i.year_of_birth}}" placeholder="YYYY">
+          </div>
+
+          <button type="submit" class="btn-save">Saqlash</button>
+      </form>
+
+      <!-- Navigatsiya va pastki havolalar -->
+      <a href="/home_page/" class="btn-home">🏠 Home</a>
+
+      <div class="extra-links">
+          <a href="/about/" class="link-info">ℹ️ About Program</a>
+          <a href="/logout/" class="link-logout">Logout 🚪</a>
+      </div>
   </div>
-  <!-- <h3><a href="/docs/"  style="color:rgba(63, 84, 0, 0.993);"> API swagger docs</a></h3> -->
 
 </body>
 </html>

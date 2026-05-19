@@ -1,21 +1,148 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>login</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--</body>-->
-<!--</html>-->
-
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Kirish</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Kirish</button>
-</form>
+<style>
+   /* === Kirish sahifasi uchun maxsus stillar === */
+   :root {
+      --card-bg: #1f1a3a;
+      --primary-color: #da2c4d;
+      --yellow: #f8ab37;
+      --text-color: #ffffff;
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --border-color: rgba(255, 255, 255, 0.1);
+   }
+
+   .login-wrapper {
+      min-height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+   }
+
+   .login-card {
+      max-width: 420px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 40px 35px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      text-align: center;
+   }
+
+   .login-card h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+   }
+
+   .login-subtitle {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 30px;
+   }
+
+   /* === Django formalari (form.as_p) uchun stillar === */
+   .login-card form p {
+      margin-bottom: 20px;
+      text-align: left;
+   }
+
+   .login-card form label {
+      display: block;
+      font-size: 0.85rem;
+      color: #d1f965; /* Och yashil-sariq yorliq */
+      margin-bottom: 6px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+   }
+
+   /* Django generatsiya qiladigan inputlarga ta'sir o'tkazish */
+   .login-card form input[type="text"],
+   .login-card form input[type="password"],
+   .login-card form input[type="email"] {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--input-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+   }
+
+   .login-card form input:focus {
+      border-color: var(--yellow);
+      background-color: rgba(255, 255, 255, 0.08);
+   }
+
+   /* === Kirish Tugmasi === */
+   .btn-login {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(138deg, var(--primary-color), var(--yellow));
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 5px 15px rgba(218, 44, 77, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+   }
+
+   .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(218, 44, 77, 0.5);
+   }
+
+   .btn-login:active {
+      transform: translateY(0);
+   }
+
+   /* Ro'yxatdan o'tishga o'tish havolasi */
+   .signup-redirect {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+   }
+   .signup-redirect a {
+      color: var(--yellow);
+      text-decoration: none;
+      font-weight: 600;
+   }
+   .signup-redirect a:hover {
+      text-decoration: underline;
+   }
+</style>
+
+<div class="login-wrapper">
+   <div class="login-card">
+      <h2>Kirish</h2>
+      <p class="login-subtitle">Tizimga kirish uchun ma'lumotlaringizni kiriting</p>
+      
+      <form method="post">
+         {% csrf_token %}
+         
+         {# Django bu yerda <p><label>...</label><input .../></p> shaklida render qiladi #}
+         {{ form.as_p }}
+         
+         <button type="submit" class="btn-login">Kirish</button>
+      </form>
+
+      <div class="signup-redirect">
+         Hisobingiz yo'qmi? <a href="/register/">Ro'yxatdan o'tish</a>
+      </div>
+   </div>
+</div>
 {% endblock %}

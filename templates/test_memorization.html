@@ -2,106 +2,169 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>CSS kod</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Radio Component</title>
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        /* === Global o'zgaruvchilar va ranglar palitrasi === */
+        :root {
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --text-color: #ffffff;
+          --form-control-color: #da2c4d; /* Tanlangan holatdagi rang (Qizil) */
+          --yellow: #f8ab37;
+          --border-color: rgba(255, 255, 255, 0.1);
+        }
 
+        *,
+        *:before,
+        *:after {
+          box-sizing: border-box;
+          transition: all 0.2s ease-in-out;
+        }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
+        body {
+          margin: 0;
+          padding: 20px;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: var(--bg-color);
+          font-family: 'Poppins', sans-serif;
+          color: var(--text-color);
+        }
 
-body {
-  margin: 0;
-}
+        /* === Markaziy Kartochka === */
+        .radio-card {
+          max-width: 450px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          padding: 35px;
+          border-radius: 20px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
 
-form {
-  display: grid;
-  place-content: center;
-  min-height: 100vh;
-}
+        .card-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.4rem;
+          font-weight: 700;
+          margin-bottom: 25px;
+          color: var(--yellow);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          text-align: center;
+        }
 
-.form-control {
-  font-family: system-ui, sans-serif;
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 1.1;
-  display: grid;
-  grid-template-columns: 1em auto;
-  gap: 0.5em;
-}
+        /* === Custom Radio Elementi === */
+        .form-control {
+          font-size: 1.2rem;
+          font-weight: 500;
+          line-height: 1.1;
+          display: grid;
+          grid-template-columns: 1.2em auto;
+          gap: 1em;
+          align-items: center;
+          padding: 14px 18px;
+          border: 2px solid var(--border-color);
+          border-radius: 12px;
+          cursor: pointer;
+          background: rgba(255, 255, 255, 0.02);
+          margin-bottom: 15px;
+        }
 
-.form-control + .form-control {
-  margin-top: 1em;
-}
+        .form-control:last-child {
+          margin-bottom: 0;
+        }
 
-.form-control:focus-within {
-  color: var(--form-control-color);
-}
+        /* Element ustiga sichqoncha kelgandagi holat */
+        .form-control:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
 
-input[type="radio"] {
-  /* Add if not using autoprefixer */
-  -webkit-appearance: none;
-  /* Remove most all native input styles */
-  appearance: none;
-  /* For iOS < 15 */
-  background-color: var(--form-background);
-  /* Not removed via appearance */
-  margin: 0;
+        /* Element ichiga fokus kirgandagi matn rangi */
+        .form-control:focus-within {
+          color: var(--yellow);
+        }
 
-  font: inherit;
-  color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid currentColor;
-  border-radius: 50%;
-  transform: translateY(-0.075em);
+        /* Brauzer standart radioni yashirish va yangi shakl berish */
+        input[type="radio"] {
+          -webkit-appearance: none;
+          appearance: none;
+          margin: 0;
+          font: inherit;
+          color: currentColor;
+          width: 1.25em;
+          height: 1.25em;
+          border: 2px solid currentColor;
+          border-radius: 50%;
+          display: grid;
+          place-content: center;
+          cursor: pointer;
+        }
 
-  display: grid;
-  place-content: center;
-}
+        /* Tanlanish nuqtasi (::before) */
+        input[type="radio"]::before {
+          content: "";
+          width: 0.65em;
+          height: 0.65em;
+          border-radius: 50%;
+          transform: scale(0);
+          box-shadow: inset 1em 1em var(--form-control-color);
+          background-color: var(--form-control-color); /* Rang xatosi tuzatildi */
+        }
 
-input[type="radio"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--form-control-color);
-  /* Windows High Contrast Mode */
-  background-color: CanvasText;
-}
+        /* Tanlangan (Checked) holatdagi vizual o'zgarishlar */
+        input[type="radio"]:checked {
+          color: var(--form-control-color);
+          border-color: var(--form-control-color);
+        }
 
-input[type="radio"]:checked::before {
-  transform: scale(1);
-}
+        input[type="radio"]:checked::before {
+          transform: scale(1);
+        }
 
-input[type="radio"]:focus {
-  outline: max(2px, 0.15em) solid currentColor;
-  outline-offset: max(2px, 0.15em);
-}
+        .form-control:has(input[type="radio"]:checked) {
+          border-color: var(--form-control-color);
+          background: rgba(218, 44, 77, 0.05);
+        }
 
+        /* Klaviatura orqali fokus berilganda */
+        input[type="radio"]:focus {
+          outline: 2px solid var(--yellow);
+          outline-offset: 3px;
+        }
     </style>
 </head>
-<body style="background-color: darkslategrey;">
-	<form action="">
-		<label class="form-control">
-		  <input type="radio" name="radio" />
-		  Radio
-		</label>
-	  
-		<label class="form-control">
-		  <input type="radio" name="radio" checked />
-		  Radio - checked
-		</label>
-		  <label class="form-control">
-		  <input type="radio" name="radio" checked />
-		  Radio - checked
-		</label>
-	  </form>
+<body>
+
+    <div class="radio-card">
+        <h2 class="card-title">Select Option</h2>
+
+        <form action="">
+            <!-- Variant 1 -->
+            <label class="form-control">
+                <input type="radio" name="quiz_option" value="option_1" />
+                <span>Radio Option - Default</span>
+            </label>
+
+            <!-- Variant 2 (Oldindan tanlangan) -->
+            <label class="form-control">
+                <input type="radio" name="quiz_option" value="option_2" checked />
+                <span>Radio Option - Checked</span>
+            </label>
+
+            <!-- Variant 3 -->
+            <label class="form-control">
+                <input type="radio" name="quiz_option" value="option_3" />
+                <span>Radio Option - Alternative</span>
+            </label>
+        </form>
+    </div>
+
 </body>
 </html>

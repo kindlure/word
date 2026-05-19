@@ -18,8 +18,10 @@ def result(request):
 
         # Profilga har result qilinganda (percentage) ini o'zgartirish uchun:
         whole = pr.acceptance + pr.rejection
-        pr.percentage = pr.acceptance * 100 / whole * 1000 // 1000
-
+        if pr.acceptance != 0 and whole != 0:
+            pr.percentage = pr.acceptance * 100 / whole * 1000 // 1000
+        else:
+            pr.acceptance = 0
         pr.save()
 
         # Resultda Xato qilgan so'zlari chiqarish uchun:

@@ -29,7 +29,22 @@ INSTALLED_APPS = [
     'userapp',
     'memorization',
     'drf_yasg',
+    'rest_framework',
+    'drf_spectacular',
 ]
+
+# REST Framework konfiguratsiyasiga spectacular-ni ulang:
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# Swagger uchun qo'shimcha (ixtiyoriy, lekin tavsiya etiladi) sozlamalar:
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Sizning API Loyihangiz',
+    'DESCRIPTION': 'API hujjati tavsifi',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

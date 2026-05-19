@@ -3,10 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Site{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>{% block title %}Mening Saytim{% endblock %}</title>
+
+    <!-- Global CSS stillari uchun blok (barcha sahifalarga tegishli) -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+        header, footer { background: #333; color: #fff; padding: 15px; text-align: center; }
+        main { flex: 1; padding: 20px; }
+    </style>
+
+    <!-- Alohida sahifalar o'z CSS fayllarini qo'shishi uchun blok -->
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+
+    <header>
+        <h2>Asosiy Menyu / Navigatsiya</h2>
+        {% block navigation %}{% endblock %}
+    </header>
+
+    <main>
+        <!-- Har bir sahifaning asosiy kontenti shu yerga tushadi -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Mening Saytim. Barcha huquqlar himoyalangan.</p>
+    </footer>
+
+    <!-- Alohida sahifalar o'z JavaScript kodlarini qo'shishi uchun blok -->
+    {% block extra_js %}{% endblock %}
+
 </body>
 </html>

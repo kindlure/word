@@ -1,114 +1,262 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Sign Up Signin Form Template Example</title>
-
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
 <html lang="en">
 <head>
-  <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth - Quiz Platform</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <style>
+       :root {
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --text-color: #ffffff;
+          --primary-color: #da2c4d;
+          --yellow: #f8ab37;
+          --input-bg: rgba(255, 255, 255, 0.05);
+          --border-color: rgba(255, 255, 255, 0.1);
+       }
+
+       * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+       }
+
+       body {
+          background: var(--bg-color);
+          font-family: 'Poppins', sans-serif;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 40px 20px;
+          color: var(--text-color);
+       }
+
+       .auth-card {
+          max-width: 550px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+       }
+
+       /* === Bootstrap Nav Tabs stili === */
+       .nav-tabs {
+          border-bottom: 2px solid var(--border-color);
+          margin-bottom: 30px;
+       }
+
+       .nav-tabs .nav-link {
+          color: rgba(255, 255, 255, 0.6);
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          font-size: 1.1rem;
+          text-transform: uppercase;
+          border: none;
+          padding: 12px 0;
+          background: transparent;
+          transition: color 0.3s ease;
+       }
+
+       .nav-tabs .nav-item .nav-link.active {
+          background-color: transparent;
+          color: var(--yellow);
+          border-bottom: 3px solid var(--yellow);
+       }
+
+       .nav-tabs .nav-link:hover {
+          color: #fff;
+          border-color: transparent;
+       }
+
+       .tab-title {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.6rem;
+          font-weight: 700;
+          margin-bottom: 25px;
+          text-align: center;
+       }
+
+       /* === Forma elementlari === */
+       .form-group {
+          margin-bottom: 20px;
+          text-align: left;
+       }
+
+       label {
+          display: block;
+          font-size: 0.85rem;
+          color: #d1f965;
+          margin-bottom: 6px;
+          font-weight: 500;
+       }
+
+       .req {
+          color: var(--primary-color);
+          margin-left: 4px;
+       }
+
+       .form-control, .form-select {
+          width: 100%;
+          padding: 12px 16px;
+          background: var(--input-bg);
+          border: 2px solid var(--border-color);
+          border-radius: 12px;
+          color: var(--text-color);
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.95rem;
+          outline: none;
+       }
+
+       /* Bootstrap standart focus stili o'rniga maxsus neon stil */
+       .form-control:focus, .form-select:focus {
+          background-color: rgba(255, 255, 255, 0.08);
+          border-color: var(--yellow);
+          color: #fff;
+          box-shadow: none;
+       }
+
+       /* Radio opsiyalari wrapperi */
+       .gender-wrap {
+          display: flex;
+          gap: 20px;
+          padding: 10px 0;
+       }
+       .gender-option {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+       }
+       .gender-option input[type="radio"] {
+          accent-color: var(--primary-color);
+          width: 18px;
+          height: 18px;
+       }
+
+       /* === Submit Tugmalari === */
+       .btn-auth {
+          width: 100%;
+          padding: 15px;
+          background: linear-gradient(138deg, var(--primary-color), var(--yellow));
+          border: none;
+          border-radius: 12px;
+          color: #fff;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          cursor: pointer;
+          margin-top: 10px;
+          box-shadow: 0 5px 15px rgba(218, 44, 77, 0.3);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+       }
+
+       .btn-auth:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(218, 44, 77, 0.5);
+       }
+    </style>
+</head>
 <body>
-<div id="form" style="color:black;">
-  <div class="container">
-    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
-      <div id="userform">
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-          <li class="active"><a href="#signup"  role="tab" data-toggle="tab">Sign up</a></li>
-          <li><a href="#login"  role="tab" data-toggle="tab">Log in</a></li>
-        </ul>
-        <div class="tab-content">
-          
-          <div class="tab-pane fade active in" id="signup">
-            <h2 class="text-uppercase text-center"> Sign Up for Free</h2>
-            <form id="signup">
-              <div class="row">
-                <div class="col-xs-12 col-sm-6">
-                  <div class="form-group">
-                    <label>Your Name<span class="req">*</span> </label>
-                    <input type="text" class="form-control" name="name" required data-validation-required-message="Please enter your name." autocomplete="off">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
 
-                <div class="col-xs-12 col-sm-6">
-                  <div class="form-group">
-                    <label>Your gender<span class="req">*</span></label><br>
-                    <input type="radio" name="gender" value="male" required> Male<br>
-                    <input type="radio" name="gender" value="female" required> Female<br>
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                
+  <div class="auth-card">
 
-              </div>
-              <div class="form-group">
-                  {% if error %}
-                <label> {{error}}<span class="req">*</span> </label>
-                  {% else %}
-                  <label> Username<span class="req">*</span> </label>
-                  {% endif %}
-                <input type="text" class="form-control" name="username" required data-validation-required-message="Please enter username." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="form-group">
-                <label> Your year of birth<span class="req">*</span> </label>
-                <input type="number" class="form-control" name="year_of_birth" data-validation-required-message="Please enter your year of birth." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              
-              <div class="form-group">
-                <label> Password<span class="req">*</span> </label>
-                <input type="password" class="form-control" name="password" required data-validation-required-message="Please enter your password" autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="mrgn-30-top">
-                <button type="submit" class="btn btn-larger btn-block"/ style="color: blue;">
-                Sign up
-                </button>
-              </div>
-            </form>
+      <!-- Tabbing Navigatsiyasi (Bootstrap 5) -->
+      <ul class="nav nav-tabs nav-justified" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup-pane" type="button" role="tab">Sign Up</button>
+          </li>
+          <li class="nav-item" role="presentation">
+              <button class="nav-link" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-pane" type="button" role="tab">Log In</button>
+          </li>
+      </ul>
+
+      <!-- Tab Kontentlari -->
+      <div class="tab-content" id="authTabsContent">
+
+          <!-- 1. SIGN UP PANELI -->
+          <div class="tab-pane fade show active" id="signup-pane" role="tabpanel" aria-labelledby="signup-tab">
+              <h2 class="tab-title">Create Account</h2>
+
+              <form action="/register/" method="post">
+                  {% csrf_token %}
+
+                  <div class="row">
+                      <div class="col-md-6 form-group">
+                          <label for="reg-name">Your Name<span class="req">*</span></label>
+                          <input type="text" id="reg-name" class="form-control" name="name" required autocomplete="off">
+                      </div>
+
+                      <div class="col-md-6 form-group">
+                          <label>Your Gender<span class="req">*</span></label>
+                          <div class="gender-wrap">
+                              <label class="gender-option">
+                                  <input type="radio" name="gender" value="male" required> Male
+                              </label>
+                              <label class="gender-option">
+                                  <input type="radio" name="gender" value="female" required> Female
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      {% if error %}
+                          <label style="color: var(--primary-color);">{{error}}<span class="req">*</span></label>
+                      {% else %}
+                          <label for="reg-username">Username<span class="req">*</span></label>
+                      {% endif %}
+                      <input type="text" id="reg-username" class="form-control" name="username" required autocomplete="off">
+                  </div>
+
+                  <div class="form-group">
+                      <label for="reg-year">Year of Birth<span class="req">*</span></label>
+                      <input type="number" id="reg-year" class="form-control" name="year_of_birth" min="1950" max="2026" required autocomplete="off">
+                  </div>
+
+                  <div class="form-group">
+                      <label for="reg-password">Password<span class="req">*</span></label>
+                      <input type="password" id="reg-password" class="form-control" name="password" required autocomplete="off">
+                  </div>
+
+                  <button type="submit" class="btn-auth">Sign Up</button>
+              </form>
           </div>
 
-          <div class="tab-pane fade in" id="login">
-            <h2 class="text-uppercase text-center"> Log in</h2>
-            <form id="login">
-              <div class="form-group">
-                <label> Your username<span class="req">*</span> </label>
-                <input type="text" class="form-control" name="username" required data-validation-required-message="Please enter your email address." autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="form-group">
-                <label> Password<span class="req">*</span> </label>
-                <input type="password" class="form-control" name="password" required data-validation-required-message="Please enter your password" autocomplete="off">
-                <p class="help-block text-danger"></p>
-              </div>
-              <div class="mrgn-30-top">
-                <button type="submit" class="btn btn-larger btn-block"/ style="color: blue;">
-                Log in
-                </button>
-              </div>
-            </form>
+          <!-- 2. LOG IN PANELI -->
+          <div class="tab-pane fade" id="login-pane" role="tabpanel" aria-labelledby="login-tab">
+              <h2 class="tab-title">Welcome Back</h2>
+
+              <form action="/login/" method="post">
+                  {% csrf_token %}
+
+                  <div class="form-group">
+                      <label for="login-username">Your Username<span class="req">*</span></label>
+                      <input type="text" id="login-username" class="form-control" name="username" required autocomplete="off">
+                  </div>
+
+                  <div class="form-group">
+                      <label for="login-password">Password<span class="req">*</span></label>
+                      <input type="password" id="login-password" class="form-control" name="password" required autocomplete="off">
+                  </div>
+
+                  <button type="submit" class="btn-auth">Log In</button>
+              </form>
           </div>
-        </div>
+
       </div>
-    </div>
   </div>
-  <!-- /.container --> 
-</div>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</body>
-<!-- partial -->
-  <script  src="./script.js"></script>
 
+  <!-- Bootstrap 5 JavaScript Bundle (Hech qanday jQuery talab qilmaydi) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

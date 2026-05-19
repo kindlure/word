@@ -2,78 +2,345 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About the program</title>
+    <!-- Montserrat va Poppins shriftlarini yuklash -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
     <style>
-body{
-  margin: 0;
-  padding: 0;
-  background: #0a0421;
-}
-.middle{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-.btn{
-  position: relative;
-  display: block;
-  color: white;
-  font-size: 14px;
-  font-family: "montserrat";
-  text-decoration: none;
-  margin: 30px 0;
-  border: 2px solid #ff7675;
-  padding: 14px 60px;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: 1s all ease;
-}
-.btn::before{
-  background: #ff7675;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  z-index: -1;
-  transition: all 0.6s ease;
-}
+        /* === O'zgaruvchilar (Variables) - Rejimlarni oson boshqarish uchun === */
+        :root {
+            --bg-color: #060214;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-accent: #ccff00;
+            --text-secondary: #00ff62;
+            --btn-border: #ff7675;
+            --btn-text: #ffffff;
+            --shadow-color: rgba(255, 118, 117, 0.3);
+            --toggle-bg: #1e1b2e;
+        }
 
-.btn1::before{
-  width: 0%;
-  height: 100%;
-}
+        [data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --card-border: rgba(0, 0, 0, 0.08);
+            --text-main: #2d3436;
+            --text-accent: #6c5ce7;
+            --text-secondary: #00b894;
+            --btn-border: #ff7675;
+            --btn-text: #2d3436;
+            --shadow-color: rgba(255, 118, 117, 0.2);
+            --toggle-bg: #dfe6e9;
+        }
 
-.btn1:hover::before{
-  width: 100%;
-}
+        /* === Umumiy uslublar === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: "Poppins", sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* === Rejim almashtirgich (Theme Toggle Switch) === */
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 30px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: var(--toggle-bg);
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            font-size: 14px;
+            border: 1px solid var(--card-border);
+        }
+
+        .slider:before {
+            background-color: #ff7675;
+            bottom: 3px;
+            content: "";
+            height: 22px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 22px;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(28px);
+        }
+
+        /* === Asosiy Kontrener (Card) === */
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        /* === Matn stillari === */
+        .description {
+            color: var(--text-accent);
+            font-family: "Montserrat", sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            white-space: pre-line;
+            text-shadow: 0 0 1px transparent;
+        }
+
+        .alert-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 35px;
+            padding: 10px;
+            border-bottom: 1px dashed var(--card-border);
+            display: inline-block;
+        }
+
+        /* === Aloqa bo'limi === */
+        .contacts {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        a.contact-item {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        a.contact-item:hover {
+            color: #ff7675;
+            background: rgba(255, 118, 117, 0.05);
+        }
+
+        /* === Zamonaviy Tugmalar (Modern Glow Buttons) === */
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            position: relative;
+            flex: 1;
+            max-width: 200px;
+            color: var(--btn-text);
+            font-family: "Montserrat", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 2px solid var(--btn-border);
+            padding: 16px 0;
+            border-radius: 12px;
+            z-index: 1;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        /* Hover effekti - Tugma bosilgandek yoki yongandek effekt beradi */
+        .btn:hover {
+            color: #ffffff;
+            background-color: var(--btn-border);
+            box-shadow: 0 0 25px var(--btn-border);
+            transform: translateY(-3px);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* === API link === */
+        .api-docs {
+            display: inline-block;
+            margin-top: 35px;
+            color: var(--text-main);
+            opacity: 0.5;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .api-docs:hover {
+            opacity: 1;
+            color: var(--text-accent);
+        }
+
+        /* Mobil qurilmalar uchun moslashuvchanlik */
+        @media (max-width: 500px) {
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+            .container {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
-<body bgcolor="#008000">
-  <div class="middle">
+<body>
 
-    <h3><p style="color:rgb(204, 255, 0); text-align: center;">The most addictive learn to new word and spelling trivia quiz word game ever!
-
-It’s proven fact that learning new things in proper way helps you remember things quickly and for long-term! Word_Memorization is a new educational English memorizing a new word game that will check and improve your Vocabulary skills in an entertaining and challenging way!
-
-Features:
-Multiple question categories!
-Play free spelling games ONLINE - anytime, anywhere.
-Expand your knowledge by playing game!
-Improve your vocabulary and dictionary!
-A must game for all the spelling bee game fans!</h3><br>
-<h3 style="color:rgb(0, 255, 98); text-align: center;">One account holder can only test from one device at a time.</p></h3>
-        <h2><p style="color:rgb(0, 255, 98); text-align: center;">📧Email: ikromjon7218@gmail.com</h2>
-        <a href="https://t.me/ikromjon7218"><h2><p style="color:rgb(0, 255, 98); text-align: center;">Telegram Ikromjon Ibrohimov</h2></a>
-            <h2 ><p style="color:rgb(0, 255, 98); text-align: center;">📞Phone number: +998944202235</h2>
- 
-          
-
-    <h1><a href="/home_page/" class="btn btn1" style="text-align: center;">🏠 home 🏠</a></h1>
-    <h1><a href="/settings/" class="btn btn1" style="text-align: center;">⬅️ Back</a></h1>
+  <!-- Rejim o'tkazgich -->
+  <div class="theme-switch-wrapper">
+    <span style="font-size: 14px; font-weight: 500;">🌓 Mode</span>
+    <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider">
+            <span>🌙</span>
+            <span>☀️</span>
+        </div>
+    </label>
   </div>
-  <!-- <h3><a href="/docs/"  style="color:rgba(63, 84, 0, 0.993);"> API swagger docs</a></h3> -->
+
+  <div class="container">
+
+    <p class="description">
+      The most addictive learn to new word and spelling trivia quiz word game ever!
+
+      It’s proven fact that learning new things in proper way helps you remember things quickly and for long-term! Word_Memorization is a new educational English memorizing a new word game that will check and improve your Vocabulary skills in an entertaining and challenging way!
+
+      Features:
+      • Multiple question categories!
+      • Play free spelling games ONLINE - anytime, anywhere.
+      • Expand your knowledge by playing game!
+      • Improve your vocabulary and dictionary!
+      • A must game for all the spelling bee game fans!
+    </p>
+
+    <p class="alert-text">⚠️ One account holder can only test from one device at a time.</p>
+
+    <div class="contacts">
+        <div class="contact-item">📧 Email: ikromjon7218@gmail.com</div>
+        <a href="https://t.me/kindlure1234" class="contact-item" target="_blank">✈️ Telegram: Ikromjon Ibrohimov</a>
+        <div class="contact-item">📞 Phone: +998942960029</div>
+    </div>
+
+    <div class="button-group">
+        <a href="/home_page/" class="btn">🏠 Home</a>
+        <a href="/settings/" class="btn">⬅️ Back</a>
+    </div>
+
+    <a href="/docs/" class="api-docs">🔗 API swagger docs</a>
+  </div>
+
+  <!-- Rejimni boshqaruvchi kichik JavaScript -->
+  <script>
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const currentTheme = localStorage.getItem('theme');
+
+    // Agar oldin tanlangan rejim bo'lsa, o'shani yoqish
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'light') {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    // Rejim o'zgarganda ishlovchi funksiya
+    function switchTheme(e) {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
+  </script>
 
 </body>
 </html>

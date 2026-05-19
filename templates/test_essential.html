@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Essential English Words</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essential English Words - Quiz</title>
+    <!-- Montserrat va Poppins shriftlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <style>
         :root {
-          --primary-color: rgb(177, 39, 108);
+          --bg-color: #0a0421;
+          --card-bg: #1f1a3a;
+          --primary-color: #da2c4d;
+          --yellow: #f8ab37;
+          --blue: #3498db;
+          --text-color: #ffffff;
+          --border-color: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -17,206 +25,251 @@
         }
 
         body {
-          height: 100vh;
+          min-height: 100vh;
           display: flex;
           justify-content: center;
           align-items: center;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          font-family: 'Poppins', sans-serif;
+          padding: 20px;
+        }
+
+        /* === Tepadagi Info Panel === */
+        .top-info-bar {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          padding: 20px 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.05rem;
+          border-bottom: 1px solid var(--border-color);
+          background: rgba(31, 26, 58, 0.5);
+          backdrop-filter: blur(10px);
+        }
+        .info-progress { color: var(--yellow); font-weight: 700; }
+        .info-acceptance { color: #00ff62; font-weight: 700; }
+
+        /* === Asosiy Test Konteyneri === */
+        .quiz-container {
+          max-width: 700px;
+          width: 100%;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+          text-align: center;
+          margin-top: 60px;
+        }
+
+        /* Xatolik xabari */
+        .error-message {
+          background: rgba(218, 44, 77, 0.1);
+          border: 1px solid var(--primary-color);
+          color: #ff7675;
+          padding: 12px;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+
+        /* Berilgan so'z */
+        .quiz-word {
+          font-family: 'Montserrat', sans-serif;
+          color: #0984e3;
+          font-size: 3.5rem;
+          font-weight: 800;
+          margin-bottom: 35px;
+          word-wrap: break-word;
+          letter-spacing: 1px;
+        }
+
+        /* === Variantlar (Radio Buttons) === */
+        .radio-buttons {
+          display: flex;
           flex-direction: column;
-          background-color: #181818;
-          color: #fff;
-          font-family: Montserrat, sans-serif;
-          position: relative; /* add this */
+          gap: 15px;
+          margin-bottom: 35px;
         }
 
         .form-group {
-          margin: 1rem 0;
+          position: relative;
         }
 
-        input[type="radio"] {
+        .form-group input[type="radio"] {
           display: none;
         }
 
-        label {
+        .form-group label {
+          display: flex;
+          align-items: center;
+          padding: 18px 25px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 2px solid var(--border-color);
+          border-radius: 14px;
           cursor: pointer;
-          position: relative;
-          font-size: 4rem;
+          font-size: 1.2rem;
+          font-weight: 500;
+          text-align: left;
+          transition: all 0.3s ease;
+          padding-left: 65px; /* Dumaloq belgi uchun joy */
         }
 
-        label::before {
+        /* Maxsus radio dumaloqchasi */
+        .form-group label::before {
           content: "";
           position: absolute;
-          width: 50px;
-          height: 50px;
-          background-color: transparent;
+          left: 25px;
+          width: 24px;
+          height: 24px;
           border: 2px solid #fff;
           border-radius: 50%;
-          top: 50%;
-          left: -5rem;
-          transform: translateY(-50%);
-          transition: border-color 400ms ease;
+          transition: all 0.3s ease;
         }
 
-        label::after {
+        /* Ichki tanlanish nuqtasi */
+        .form-group label::after {
           content: "";
           position: absolute;
-          width: 50px;
-          height: 50px;
+          left: 31px;
+          width: 12px;
+          height: 12px;
           background-color: var(--primary-color);
-          border: 2px solid var(--primary-color);
           border-radius: 50%;
-          top: 50%;
-          left: -5rem;
-          transform: translateY(-50%) scale(0);
-          transition: transform 400ms ease;
+          transform: scale(0);
+          transition: transform 0.2s ease;
         }
 
-        input[type="radio"]:checked + label::before {
+        /* Hover effekti */
+        .form-group label:hover {
+          background: rgba(255, 255, 255, 0.07);
+          border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Aktiv (Tanlangan) holati */
+        .form-group input[type="radio"]:checked + label {
+          border-color: var(--primary-color);
+          background: rgba(218, 44, 77, 0.08);
+        }
+
+        .form-group input[type="radio"]:checked + label::before {
           border-color: var(--primary-color);
         }
 
-        input[type="radio"]:checked + label::after {
-          transform: translateY(-50%) scale(0.55);
+        .form-group input[type="radio"]:checked + label::after {
+          transform: scale(1);
         }
 
-        /* add these two styles */
-
-
-
-
-        .btn {
-  box-sizing: border-box;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  background-color: transparent;
-  border: 2px solid #e74c3c;
-  border-radius: 0.6em;
-  color: #e74c3c;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-self: center;
-      -ms-flex-item-align: center;
-          align-self: center;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1;
-  margin: 20px;
-  padding: 1.2em 2.8em;
-  text-decoration: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-}
-.btn:hover, .btn:focus {
-  color: #fff;
-  outline: 0;
-}
-
-.first {
-  -webkit-transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-}
-.first:hover {
-  box-shadow: 0 0 40px 40px #e74c3c inset;
-}
-
-.second {
-  border-radius: 3em;
-  border-color: #1abc9c;
-  color: #fff;
-  background-image: -webkit-linear-gradient(left, rgba(26, 188, 156, 0.6), rgba(26, 188, 156, 0.6) 5%, #1abc9c 5%, #1abc9c 10%, rgba(26, 188, 156, 0.6) 10%, rgba(26, 188, 156, 0.6) 15%, #1abc9c 15%, #1abc9c 20%, rgba(26, 188, 156, 0.6) 20%, rgba(26, 188, 156, 0.6) 25%, #1abc9c 25%, #1abc9c 30%, rgba(26, 188, 156, 0.6) 30%, rgba(26, 188, 156, 0.6) 35%, #1abc9c 35%, #1abc9c 40%, rgba(26, 188, 156, 0.6) 40%, rgba(26, 188, 156, 0.6) 45%, #1abc9c 45%, #1abc9c 50%, rgba(26, 188, 156, 0.6) 50%, rgba(26, 188, 156, 0.6) 55%, #1abc9c 55%, #1abc9c 60%, rgba(26, 188, 156, 0.6) 60%, rgba(26, 188, 156, 0.6) 65%, #1abc9c 65%, #1abc9c 70%, rgba(26, 188, 156, 0.6) 70%, rgba(26, 188, 156, 0.6) 75%, #1abc9c 75%, #1abc9c 80%, rgba(26, 188, 156, 0.6) 80%, rgba(26, 188, 156, 0.6) 85%, #1abc9c 85%, #1abc9c 90%, rgba(26, 188, 156, 0.6) 90%, rgba(26, 188, 156, 0.6) 95%, #1abc9c 95%, #1abc9c 100%);
-  background-image: linear-gradient(to right, rgba(26, 188, 156, 0.6), rgba(26, 188, 156, 0.6) 5%, #1abc9c 5%, #1abc9c 10%, rgba(26, 188, 156, 0.6) 10%, rgba(26, 188, 156, 0.6) 15%, #1abc9c 15%, #1abc9c 20%, rgba(26, 188, 156, 0.6) 20%, rgba(26, 188, 156, 0.6) 25%, #1abc9c 25%, #1abc9c 30%, rgba(26, 188, 156, 0.6) 30%, rgba(26, 188, 156, 0.6) 35%, #1abc9c 35%, #1abc9c 40%, rgba(26, 188, 156, 0.6) 40%, rgba(26, 188, 156, 0.6) 45%, #1abc9c 45%, #1abc9c 50%, rgba(26, 188, 156, 0.6) 50%, rgba(26, 188, 156, 0.6) 55%, #1abc9c 55%, #1abc9c 60%, rgba(26, 188, 156, 0.6) 60%, rgba(26, 188, 156, 0.6) 65%, #1abc9c 65%, #1abc9c 70%, rgba(26, 188, 156, 0.6) 70%, rgba(26, 188, 156, 0.6) 75%, #1abc9c 75%, #1abc9c 80%, rgba(26, 188, 156, 0.6) 80%, rgba(26, 188, 156, 0.6) 85%, #1abc9c 85%, #1abc9c 90%, rgba(26, 188, 156, 0.6) 90%, rgba(26, 188, 156, 0.6) 95%, #1abc9c 95%, #1abc9c 100%);
-  background-position: 0 0;
-  background-size: 100%;
-  -webkit-transition: background 300ms ease-in-out;
-  transition: background 300ms ease-in-out;
-}
-.second:hover {
-  background-position: 100px;
-}
-
-.third {
-  border-color: #3498db;
-  color: #fff;
-  box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
-  -webkit-transition: all 150ms ease-in-out;
-  transition: all 150ms ease-in-out;
-}
-.third:hover {
-  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
-}
-        .aa2 {
-          position: absolute;
-          top: 0;
-          right: 1;
+        /* === Submit Tugmasi === */
+        .btn-submit {
+          width: 100%;
+          padding: 16px;
+          background: transparent;
+          border: 2px solid var(--blue);
+          color: #fff;
+          border-radius: 12px;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          cursor: pointer;
+          box-shadow: 0 0 30px rgba(52, 152, 219, 0.2) inset;
+          transition: all 0.3s ease-in-out;
         }
 
-        .aa1 {
-          position: initial;
-          top: 0;
-          left: 0;
+        .btn-submit:hover {
+          box-shadow: 0 0 10px 0 rgba(52, 152, 219, 0.3) inset, 0 0 15px 5px var(--blue);
+          background-color: var(--blue);
         }
-        .right-aligned {
-    text-align: right;
-    display: flex;
-    flex-direction: column-reverse;
-  }
+
+        .btn-submit:active {
+          transform: translateY(1px);
+        }
+
+        /* Mobil qurilmalar uchun moslashuvchanlik */
+        @media (max-width: 600px) {
+          .quiz-container { padding: 30px 20px; }
+          .quiz-word { font-size: 2.3rem; }
+          .form-group label { font-size: 1.05rem; padding-left: 55px; }
+          .form-group label::before { left: 18px; }
+          .form-group label::after { left: 24px; }
+          .top-info-bar { padding: 15px 20px; font-size: 0.95rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="aa2"><h3 style="color:#fff;">{{amount_number}} / {{amount}}</h3></div>
-    <div class="aa1"><h3 style="color:#fff;">acceptance: {{acceptance}}</h3></div>
-<br>
 
-{% if error %}
-    <div class="right-aligned">
-      <h3 style="color:rgb(255, 0, 0);">{{error}}</h3>
+    <!-- Yuqori ma'lumotlar paneli -->
+    <div class="top-info-bar">
+        <div class="info-progress">📝 Progress: {{amount_number}} / {{amount}}</div>
+        <div class="info-acceptance">✔️ Acceptance: {{acceptance}}</div>
     </div>
-{% else %} 
-<br>
-{% endif %}
 
-    <form action="/test_essential/" method="post">{% csrf_token %}
-    <h1 style="color: blue; font-size: 100px;">{{word}}</h1>
-    <div class="radio-buttons">
-        <div class="form-group">
-          <input type="radio" id="male" name="soz" value="{{soz_0}}"/>
-          <label for="male">{{soz_0}}</label>
-        </div>
-      
-        <div class="form-group">
-          <input type="radio" id="female" name="soz"  value="{{soz_1}}"/>
-          <label for="female">{{soz_1}}</label>
-        </div>
-      
-        <div class="form-group">
-          <input type="radio" id="other" name="soz"  value="{{soz_2}}"/>
-          <label for="other">{{soz_2}}</label>
-        </div>
-      </div>
-      <button class="btn third" type="submit">Submit</button>
-    </form>
-   
+    <div class="quiz-container">
+
+        <!-- Xatolik xabari (Django orqali kelsa) -->
+        {% if error %}
+            <div class="error-message">
+                ⚠️ {{error}}
+            </div>
+        {% endif %}
+
+        <!-- Test Formasi -->
+        <form action="/test_essential/" method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            <!-- Berilgan inglizcha so'z -->
+            <h1 class="quiz-word">{{word}}</h1>
+
+            <!-- Variantlar bloki -->
+            <div class="radio-buttons">
+                <div class="form-group">
+                    <input type="radio" id="variant_0" name="soz" value="{{soz_0}}"/>
+                    <label for="variant_0">{{soz_0}}</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="radio" id="variant_1" name="soz" value="{{soz_1}}"/>
+                    <label for="variant_1">{{soz_1}}</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="radio" id="variant_2" name="soz" value="{{soz_2}}"/>
+                    <label for="variant_2">{{soz_2}}</label>
+                </div>
+            </div>
+
+            <!-- Tasdiqlash tugmasi -->
+            <button class="btn-submit" type="submit">Submit</button>
+        </form>
+    </div>
+
 <script>
   function validateForm() {
     var radios = document.getElementsByName("soz");
     var formValid = false;
     var i = 0;
+
     while (!formValid && i < radios.length) {
       if (radios[i].checked) {
         formValid = true;
       }
       i++;
     }
+
     if (!formValid) {
-      alert("Iltimos, birini tanlang!");
+      alert("Iltimos, javob variantlaridan birini tanlang!");
     }
     return formValid;
   }
 </script>
 
-</body></html>
+</body>
+</html>
