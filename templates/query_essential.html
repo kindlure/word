@@ -115,10 +115,22 @@
        .title-section {
           margin-bottom: 30px;
        }
-       .title-section h1, .title-section h2 {
+       .title-section h2 {
           font-size: 1.8rem;
           font-weight: 700;
        }
+
+       /* Dinamik xabarlar paneli */
+       .alert-message {
+          padding: 12px;
+          margin-bottom: 20px;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          font-weight: 500;
+          display: none;
+       }
+       .alert-danger { background-color: rgba(218, 44, 77, 0.2); color: #ff4d6d; border: 1px solid var(--red); }
+       .alert-success { background-color: rgba(0, 255, 98, 0.2); color: #00ff62; border: 1px solid #00ff62; }
 
        /* === Form elementlari === */
        .form-group {
@@ -191,7 +203,7 @@
           box-shadow: 0 8px 20px rgba(218, 44, 77, 0.3);
        }
 
-       /* === Start Tugmasi (Mukammal Mukofot ko'rinishida) === */
+       /* === Start Tugmasi === */
        .btn-start {
           width: 100%;
           padding: 16px;
@@ -212,8 +224,8 @@
           box-shadow: 0 8px 25px rgba(218, 44, 77, 0.5);
        }
        .btn-start:active { transform: translateY(0); }
+       .btn-start:disabled { opacity: 0.6; cursor: not-allowed; }
 
-       /* Kuchli moslashuvchanlik */
        @media (max-width: 500px) {
           .form-row { flex-direction: column; gap: 0; }
           .container { padding: 30px 20px; }
@@ -223,10 +235,8 @@
 </head>
 <body>
 
-  <!-- Orqaga qaytish havolasi -->
   <a href="/4000_essential_english_words/" class="btn-back">⬅️ Back</a>
 
-  <!-- Rejim almashtirgich -->
   <div class="theme-switch-wrapper">
     <label class="theme-switch" for="checkbox">
         <input type="checkbox" id="checkbox" />
@@ -239,37 +249,38 @@
 
   <div class="container">
 
-      <!-- Sarlavhalar va Django xabarlari -->
       <div class="title-section">
-          {% if success %}
-             <h2 style="color: var(--red);">To suit your taste:</h2>
-          {% else %}
-             <h1 style="color: var(--red);">{{message}}</h1>
-          {% endif %}
+          <!-- Sarlavhaga kitob nomini dinamik chiqarish uchun ID berdik -->
+          <h2 style="color: var(--red);" id="form-title">To suit your taste:</h2>
       </div>
 
-      <!-- Toza va Validatsiyadan o'tgan Form HTML -->
-      <form action="/query_essential_1/" method="post">
-          {% csrf_token %}
+      <!-- Xatoliklar paneli -->
+      <div id="alert-box" class="alert-message"></div>
+
+      <form id="quiz-settings-form">
+          <!-- Django CSRF Token (Muammosiz ishlashi uchun) -->
+          <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
+          <!-- Tanlangan kitob raqami uchun yashirin input -->
+          <input type="hidden" name="book" id="book" value="1">
 
           <div class="form-row">
               <div class="form-group">
                   <label>From Unit:</label>
-                  <input type="number" name="from_unit" value="1" min="1" max="30">
+                  <input type="number" name="from_unit" id="from_unit" value="1" min="1" max="30">
               </div>
 
               <div class="form-group">
                   <label>To Unit:</label>
-                  <input type="number" name="to_unit" value="30" min="1" max="30">
+                  <input type="number" name="to_unit" id="to_unit" value="30" min="1" max="30">
               </div>
           </div>
 
           <div class="form-group">
               <label>Number of tests (Amount):</label>
-              <input type="number" name="amount" value="5" min="1">
+              <input type="number" name="amount" id="amount" value="5" min="1" max="250">
           </div>
 
-          <!-- Tarjima yo'nalishlari (Chiroyli Kartochkalar) -->
           <div class="radio-group">
               <div class="radio-box">
                   <input type="radio" name="language" id="language-eng" value="eng-uzb" checked>
@@ -281,14 +292,12 @@
               </div>
           </div>
 
-          <!-- Zamonaviy mukammal START tugmasi -->
-          <button type="submit" class="btn-start">Start Quiz</button>
+          <button type="submit" class="btn-start" id="submit-btn">Start Quiz</button>
       </form>
-
   </div>
 
-  <!-- Rejimni boshqarish (JS) -->
   <script>
+    // === 1. Tungi/Kunduzgi rejim (Theme Switch) ===
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     const currentTheme = localStorage.getItem('theme');
 
@@ -308,8 +317,137 @@
             localStorage.setItem('theme', 'dark');
         }
     }
-
     toggleSwitch.addEventListener('change', switchTheme, false);
+
+
+    // === 2. Yangi Yagona API manzili ===
+    const API_URL = "/api/query_essential/";
+
+    async function loadCurrentSettings() {
+        // Avvalgi oynada foydalanuvchi tanlagan kitobni aniqlaymiz
+        const selectedBook = localStorage.getItem('selected_book') || "1";
+        document.getElementById('book').value = selectedBook;
+        document.getElementById('form-title').innerText = `Book ${selectedBook} Settings:`;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const resData = await response.json();
+                if (resData.success && resData.current_settings) {
+                    const settings = resData.current_settings;
+
+                    // Agar bazada avvaldan saqlangan sozlama bo'lsa formaga yuklaymiz
+                    if(settings.from_unit !== null) document.getElementById('from_unit').value = settings.from_unit;
+                    if(settings.to_unit !== null) document.getElementById('to_unit').value = settings.to_unit;
+                    if(settings.amount !== null) document.getElementById('amount').value = settings.amount;
+
+                    if (settings.language === 'uzb-eng') {
+                        document.getElementById('language-uzb').checked = true;
+                    } else {
+                        document.getElementById('language-eng').checked = true;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Sozlamalarni yuklashda xatolik yuz berdi:", error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadCurrentSettings);
+
+
+    // === 3. POST so'rov (Saqlash va Keyingi qadam) ===
+    const form = document.getElementById('quiz-settings-form');
+    const alertBox = document.getElementById('alert-box');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Saving...";
+
+        alertBox.style.display = 'none';
+        alertBox.className = 'alert-message';
+
+        const book = document.getElementById('book').value;
+        const from_unit = document.getElementById('from_unit').value;
+        const to_unit = document.getElementById('to_unit').value;
+        const amount = document.getElementById('amount').value;
+        const language = document.querySelector('input[name="language"]:checked').value;
+
+        const csrfToken = document.getElementById('csrf_token').value || getCookie('csrftoken');
+
+        const requestData = {
+            book: parseInt(book),
+            from_unit: parseInt(from_unit),
+            to_unit: parseInt(to_unit),
+            amount: parseInt(amount),
+            language: language
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const data = await response.json();
+
+            if (response.status === 200 && data.success) {
+                alertBox.textContent = data.message || "Settings saved successfully!";
+                alertBox.classList.add('alert-success');
+                alertBox.style.display = 'block';
+
+                setTimeout(() => {
+                    // Test sahifasiga yo'naltirish
+                    window.location.href = data.next_step_url || "/test_essential/";
+                }, 1200);
+
+            } else {
+                alertBox.textContent = data.message || "Validation error occurred!";
+                alertBox.classList.add('alert-danger');
+                alertBox.style.display = 'block';
+
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Start Quiz";
+            }
+
+        } catch (error) {
+            alertBox.textContent = "Server connection error! Please try again.";
+            alertBox.classList.add('alert-danger');
+            alertBox.style.display = 'block';
+
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Start Quiz";
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
   </script>
 
 </body>

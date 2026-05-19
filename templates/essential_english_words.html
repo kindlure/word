@@ -39,7 +39,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -103,7 +103,6 @@
             text-align: center;
         }
 
-        /* Ogohlantirish sarlavhasi */
         .status-title {
             color: var(--title-color);
             font-family: "Montserrat", sans-serif;
@@ -129,7 +128,7 @@
             padding: 16px;
             border-radius: 12px;
             font-size: 1.05rem;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             border: 1px solid transparent;
         }
@@ -157,7 +156,7 @@
             box-shadow: 0 8px 20px rgba(9, 132, 227, 0.2);
         }
 
-        /* Bloklangan (tayyor bo'lmagan) kitoblar stillari */
+        /* Bloklangan kitoblar */
         .book-item.disabled {
             color: var(--disabled-book);
             background: rgba(120, 120, 120, 0.05);
@@ -166,7 +165,7 @@
             opacity: 0.6;
         }
 
-        /* === Asosiy Menyu Tugmasi (Modern Minimalist) === */
+        /* === Bosh sahifa Tugmasi === */
         .btn-home {
             display: inline-flex;
             align-items: center;
@@ -193,9 +192,6 @@
             filter: brightness(1.1);
         }
 
-        .btn-home:active { transform: translateY(0); }
-
-        /* Mobil moslashuvchanlik */
         @media (max-width: 480px) {
             .container { padding: 30px 20px; }
             .status-title { font-size: 1.2rem; }
@@ -205,7 +201,6 @@
 </head>
 <body>
 
-  <!-- Rejim almashtirgich -->
   <div class="theme-switch-wrapper">
     <span style="font-size: 14px; font-weight: 500;">🌓 Mode</span>
     <label class="theme-switch" for="checkbox">
@@ -218,29 +213,25 @@
   </div>
 
   <div class="container">
-
-    <!-- Semantik jihatdan to'g'ri sarlavha -->
     <h1 class="status-title">⚠️ Only 3 books are available</h1>
 
-    <!-- Kitoblar ro'yxati div konteynerda -->
     <div class="book-list">
-        <a href="/query_essential_1/" class="book-item active">📚 4000 Essential English Words - 1</a>
-        <a href="/query_essential_2/" class="book-item active">📚 4000 Essential English Words - 2</a>
-        <a href="/query_essential_3/" class="book-item active">📚 4000 Essential English Words - 3</a>
+        <!-- Faol kitoblar to'g'ri manzil va chiroyli nom bilan yuklandi -->
+        <a href="/select_essential/" class="book-item active" onclick="localStorage.setItem('selected_book', 1)">📖 4000 Essential English Words - 1</a>
+        <a href="/select_essential/" class="book-item active" onclick="localStorage.setItem('selected_book', 2)">📖 4000 Essential English Words - 2</a>
+        <a href="/select_essential/" class="book-item active" onclick="localStorage.setItem('selected_book', 3)">📖 4000 Essential English Words - 3</a>
 
-        <!-- Tayyor bo'lmaganlari "disabled" klassida va manzilsiz -->
-        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 4 (Tez kunda)</a>
-        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 5 (Tez kunda)</a>
-        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 6 (Tez kunda)</a>
+        <!-- Kelgusida qo'shiladigan bloklangan kitoblar -->
+        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 4 (Coming soon)</a>
+        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 5 (Coming soon)</a>
+        <a href="javascript:void(0)" class="book-item disabled">🔒 4000 Essential English Words - 6 (Coming soon)</a>
     </div>
 
-    <!-- Bosh sahifa tugmasi -->
     <a href="/home_page/" class="btn-home">🏠 Home</a>
-
   </div>
 
-  <!-- Rejimni boshqaruvchi JS skript -->
   <script>
+    // === Theme Switcher (Keshni saqlash mantiqi) ===
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     const currentTheme = localStorage.getItem('theme');
 
@@ -260,9 +251,7 @@
             localStorage.setItem('theme', 'dark');
         }
     }
-
     toggleSwitch.addEventListener('change', switchTheme, false);
   </script>
-
 </body>
 </html>
