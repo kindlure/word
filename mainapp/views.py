@@ -61,7 +61,7 @@ def test_essential_page(request):
 
 def play_again(request):
     if request.user.is_authenticated:
-        return redirect('select-essential-page')
+        return redirect('/select_essential/')  # 🚀 To'g'ridan-to'g'ri URL manzilini yozamiz (boshiga va oxiriga / qo'ying)
     return redirect('/')
 
 
